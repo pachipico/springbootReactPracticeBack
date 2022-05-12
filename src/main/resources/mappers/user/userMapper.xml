@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwtpractice.user.mapper.UserMapper">
+  
+  <insert id="save" parameterType="user">
+   insert into user(email, name, roles, password, address) values(#{email}, #{name}, #{roles}, #{password}, #{address})
+  </insert>
+  
+  <select id="login" resultType="user">
+    select * from user where email = #{email} and password=#{password}
+  </select>
+  
+  <select id="findByUserId" resultType="user">
+    select * from user where userId= #{userId}
+  </select>
+  
+  <select id="isEmailValid" resultType="int">
+    select 
+        case
+            when count(userId) = 1 then 0
+            when count(userId) = 0 then 1
+        end
+        from user where email = #{email}
+  </select>
+  
+  <select id="findByName" resultType="user" >
+    select * from user where name = #{name}
+  </select>
+  
+  <select id="findByEmail" resultType="user">
+    select * from user where email = #{email}
+  </select>
+  
+  <select id="findAllUser" resultType="user">
+    select * from user where userId > 0
+  </select>
+  
+  <select id="findLastSaved" resultType="user">
+    select * from user where userId = (select MAX(userId) from user) 
+  </select>
+
+  <update id="modify" parameterType="user">
+    update user set name = #{name}, modifiedDate = current_date where userId = #{userId}
+  </update>
+  
+  <delete id="deleteUser" parameterType="long">
+    delete from user where userId = #{userId}
+  </delete>
+</mapper> 

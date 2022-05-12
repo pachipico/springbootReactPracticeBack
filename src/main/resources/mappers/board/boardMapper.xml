@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jwtpractice.board.mapper.BoardMapper">
+    <insert id="save" parameterType="board">
+        insert into `board`(title, writer, content) values(#{title}, #{writer}, #{content})
+    </insert>
+    
+    <select id="findAll" resultType="board">
+        select * from `board` where bid > 0
+    </select>
+    
+    <select id="findLastSaved" resultType="board">
+        select * from `board` where bid = (select MAX(bid) from `board`);
+    </select>
+    
+    <select id="findBoardById" resultType="board">
+        select * from `board` where bid = #{bid}
+    </select>
+    
+    <select id="findBoardByTitle" resultType="board">
+        select * from `board` where title like "%${title}%"
+    </select>
+    
+    <select id="findBoardByWriter">
+        select * from `board` where writer = #{writer}
+    </select>
+    
+    <update id="modifyBoardHit">
+        update `board` set hit = hit + 1 where bid = #{bid}
+    </update>
+
+    <update id="modifyBoard" parameterType="board">
+        update `board` set title = #{title}, content = #{content}, modAt = (now()) where bid = #{bid}
+    </update>
+    
+    <delete id="deleteBoard"> 
+        delete from board where bid = #{bid}
+    </delete>
+
+</mapper>

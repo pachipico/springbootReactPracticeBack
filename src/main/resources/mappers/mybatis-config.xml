@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0/EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <!-- <typeAlias type="com.cos.book.domain.Book" alias="book"/> -->
+        <typeAlias type="com.jwtpractice.user.domain.User" alias="user"/>
+        <typeAlias type="com.jwtpractice.token.domain.RefreshToken" alias="token"/>
+        <typeAlias type="com.jwtpractice.board.domain.Board" alias="board"/>
+    </typeAliases>
+</configuration>

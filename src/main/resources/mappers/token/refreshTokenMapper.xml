@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+    namespace="com.jwtpractice.token.mapper.RefreshTokenMapper">
+
+    <insert id="save" parameterType="token">
+        insert into refreshToken(`key`, token) values(#{key}, #{token})
+    </insert>
+
+    <select id="findByKey" resultType="token">
+        select * from refreshToken where `key` = #{key}
+    </select>
+
+    <update id="updateToken" parameterType="token">
+        update refreshToken set token = #{token} , modifiedDate = now() where `key` =
+        #{key}
+    </update>
+
+</mapper>
