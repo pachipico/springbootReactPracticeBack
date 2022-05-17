@@ -36,7 +36,6 @@ public class JwtProvider {
 	private Long refreshTokenValidMillisecond = 60 * 60 * 1000L * 24 * 14;
 
 	private final CustomUserDetailsService userDetailsService;
-	
 
 	@PostConstruct
 	private void init() {
@@ -48,8 +47,7 @@ public class JwtProvider {
 		Date now = new Date();
 		Map<String, Object> header = new HashMap<String, Object>();
 		header.put("typ", "JWT");
-		String accessToken = JWT.create().withSubject(String.valueOf(userId))
-				.withHeader(header).withIssuedAt(now)
+		String accessToken = JWT.create().withSubject(String.valueOf(userId)).withHeader(header).withIssuedAt(now)
 				.withExpiresAt(new Date(now.getTime() + accessTokenValidMillisecond)).withClaim("roles", roles)
 				.withClaim("email", userDetailsService.loadUserByUsername(String.valueOf(userId)).getUsername())
 				.sign(Algorithm.HMAC512(secretKey));
@@ -58,30 +56,38 @@ public class JwtProvider {
 				.withClaim("email", userDetailsService.loadUserByUsername(String.valueOf(userId)).getUsername())
 				.withExpiresAt(new Date(now.getTime() + refreshTokenValidMillisecond))
 				.sign(Algorithm.HMAC512(secretKey));
-		
+
 		return new TokenDto("Bearer", accessToken, refreshToken, accessTokenValidMillisecond);
 
 	}
-	
-	// 토큰을 받아서 권한이 있는지를 판단	
+
+	// 토큰을 받아서 권한이 있는지를 판단
 	public Authentication getAuthentication(String token) {
 		Claim roles = JWT.decode(token).getClaim("roles");
 		Claim email = JWT.decode(token).getClaim("email");
-		if(roles == null) throw new RuntimeException("권한이 없습니다.");
-		
+		if (roles == null)
+			throw new RuntimeException("권한이 없습니다.");
+
 		UserDetails userDetails = userDetailsService.loadUserByUsername(JWT.decode(token).getSubject());
 		log.debug("Provider useDetails : {}", userDetails.getUsername());
 		return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
 	}
-	
+
 	// 헤더에서 토큰 가져옴.
 	public String resolveToken(HttpServletRequest request) {
+		log.debug("Header token: {}", request.getHeader("X-AUTH-TOKEN"));
 		return request.getHeader("X-AUTH-TOKEN");
 	}
-	
+
 	// 토큰이 만료되었는지 판단.
 	public boolean validationToken(String token) {
-		return JWT.decode(token).getExpiresAt().after(new Date());
+		log.debug("validate token : {}", token);
+		if (token.equals("null")) {
+			log.debug("token is null");
+			return false;
+		} else {
+			return JWT.decode(token).getExpiresAt().after(new Date());
+		}
 	}
 
 }

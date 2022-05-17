@@ -35,7 +35,7 @@ public class SecurityService {
 		String email = userLoginRequestDto.getEmail();
 		String password = userLoginRequestDto.getPassword();
 		User user = userMapper.findByEmail(email);
-		
+		log.debug("user: >>>>>>{}", user);
 		if(user == null) throw new RuntimeException("이메일을 확인해주세요.");
 		
 		if(!encoder.matches(password, user.getPassword())) throw new RuntimeException("비밀번호가 일치하지 않습니다."); 

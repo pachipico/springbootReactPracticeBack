@@ -15,11 +15,13 @@ public class UserLoginResponseDto {
 	private final Long userId;
 	private final List<String> roles;
 	private final String createdDate;
+	private final String address;
 	
 	public UserLoginResponseDto(User user) {
 		this.userId = user.getUserId();
 		this.roles = Arrays.asList(user.getRoles().split(","));
 		this.createdDate = user.getCreatedDate();
+		this.address = user.getAddress();
 	}
 	
 	

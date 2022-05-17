@@ -30,12 +30,12 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 			throws IOException, ServletException {
 		String token = jwtProvider.resolveToken((HttpServletRequest) request);
 		
-		log.debug("인증 처리중 token: {}", token);
 //		if(token==null) throw new CAuthenticationEntrypointException("인증 토큰 혹은 권한이 없습니다.");
-		if(!jwtProvider.validationToken(token)) {
-			
-		}
-		if(token != null || jwtProvider.validationToken(token)) {
+//		if(!jwtProvider.validationToken(token)) {
+//			throw new CAuthenticationEntrypointException("인증 토큰 혹은 권한이 없습니다.");
+//		}
+		if(token != "" && token != null && jwtProvider.validationToken(token)) {
+			log.debug("인증 처리중 token: {}", token);
 			Authentication authentication = jwtProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
