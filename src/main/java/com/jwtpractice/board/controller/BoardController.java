@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jwtpractice.board.dto.BoardRequestDto;
 import com.jwtpractice.board.dto.BoardResponseDto;
 import com.jwtpractice.board.service.BoardService;
+import com.jwtpractice.response.result.CommonResult;
 import com.jwtpractice.response.result.ListResult;
 import com.jwtpractice.response.result.SingleResult;
 import com.jwtpractice.response.service.ResponseService;
@@ -41,8 +42,9 @@ public class BoardController {
 	}
 	
 	@GetMapping("/board/{bid}")
-	public SingleResult<BoardResponseDto> findById(@PathVariable("bid") Long bid){
-		return responseService.getSingleResult(boardService.findBoardById(bid));
+	public CommonResult findById(@PathVariable("bid") Long bid){
+		BoardResponseDto board = boardService.findBoardById(bid);
+		return board != null ? responseService.getSingleResult(boardService.findBoardById(bid)) : responseService.getFailResult();
 	}
 	
 	@PutMapping("/board/{bid}")

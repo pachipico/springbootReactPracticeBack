@@ -34,7 +34,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 //		if(!jwtProvider.validationToken(token)) {
 //			throw new CAuthenticationEntrypointException("인증 토큰 혹은 권한이 없습니다.");
 //		}
-		if(token != "" && token != null && jwtProvider.validationToken(token)) {
+		if(token != "" &&  jwtProvider.validationToken(token)) {
 			log.debug("인증 처리중 token: {}", token);
 			Authentication authentication = jwtProvider.getAuthentication(token);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
